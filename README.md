@@ -1,0 +1,1 @@
+# AI-Powered-Pest-and-Disease-Forecasting-Platform-
