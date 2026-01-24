@@ -1,0 +1,17 @@
+node_modules/
+.env
+venv/
+*.pt
+*.pth
+__pycache__/
+dist/
+build/
+.vscode/
+.idea/
+*.log
+uploads/
+node_modules/
+client/node_modules/
+server/node_modules/
+server/.env
+ai-service/venv/
