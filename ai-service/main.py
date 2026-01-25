@@ -25,7 +25,7 @@ supplement_info = pd.read_csv('supplement_info.csv', encoding='cp1252')
 
 # Load ML Model
 model = cnn_module.CNN(39)
-model.load_state_dict(torch.load('plant_disease_model_1_latest.pt', map_location=torch.device('cpu')))
+model.load_state_dict(torch.load('plant_disease_model_1_latest.pt', map_location=torch.device('cpu'), weights_only=False))
 model.eval()
 
 # Health check indices
