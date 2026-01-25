@@ -36,9 +36,8 @@ export const AuthProvider = ({ children }) => {
 
     const signup = async (userData) => {
         const res = await axios.post('http://localhost:5000/api/auth/signup', userData);
-        setUser(res.data.user);
-        localStorage.setItem('token', res.data.token);
-        axios.defaults.headers.common['Authorization'] = `Bearer ${res.data.token}`;
+        // We don't set user context here because they need to verify OTP first
+        return res.data;
     };
 
     const logout = () => {

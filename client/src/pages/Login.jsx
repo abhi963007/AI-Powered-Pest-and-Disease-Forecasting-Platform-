@@ -18,7 +18,11 @@ const Login = () => {
             await login(email, password);
             navigate('/dashboard');
         } catch (err) {
-            alert('Login failed: ' + (err.response?.data?.error || err.message));
+            if (err.response?.status === 403 && err.response?.data?.email) {
+                navigate('/verify-otp', { state: { email: err.response.data.email } });
+            } else {
+                alert('Login failed: ' + (err.response?.data?.error || err.message));
+            }
         } finally {
             setIsLoading(false);
         }
@@ -68,6 +72,9 @@ const Login = () => {
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
                                 />
+                            </div>
+                            <div className="mt-2 text-right">
+                                <Link to="/forgot-password" size={18} className="text-xs font-bold text-[#6fb342] hover:underline">Forgot Password?</Link>
                             </div>
                         </div>
 

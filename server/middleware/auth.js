@@ -10,6 +10,9 @@ const auth = async (req, res, next) => {
         const user = await User.findById(decoded.id);
 
         if (!user) throw new Error();
+        if (!user.isVerified) {
+            return res.status(403).send({ error: 'Email not verified', email: user.email });
+        }
 
         req.user = user;
         req.token = token;

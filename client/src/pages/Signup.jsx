@@ -86,7 +86,7 @@ const Signup = () => {
         setIsLoading(true);
         try {
             await signup(formData);
-            navigate('/dashboard');
+            navigate('/verify-otp', { state: { email: formData.email } });
         } catch (err) {
             alert('Registration failed: ' + (err.response?.data?.error || err.message));
         } finally {

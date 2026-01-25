@@ -7,6 +7,9 @@ const userSchema = new mongoose.Schema({
     phone: { type: String, required: true },
     password: { type: String, required: true },
     isStaff: { type: Boolean, default: false },
+    isVerified: { type: Boolean, default: false },
+    otp: { type: String },
+    otpExpires: { type: Date },
     dateJoined: { type: Date, default: Date.now }
 });
 
