@@ -6,6 +6,7 @@ import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-lea
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
 import { useAuth } from '../context/AuthContext';
+import CustomSelect from '../components/CustomSelect';
 
 // Fix for default marker icon in Leaflet
 const markerIcon = new L.Icon({
@@ -252,16 +253,11 @@ const Alerts = () => {
 
                     <div className="flex flex-col md:flex-row items-center gap-4">
                         {fields.length > 0 && (
-                            <div className="flex items-center gap-2 bg-white border border-gray-100 rounded-2xl px-4 py-2 shadow-sm">
-                                <MapPin size={18} className="text-[#6fb342]" />
-                                <select
-                                    className="bg-transparent font-bold text-[#2d5a27] outline-none text-sm appearance-none cursor-pointer pr-6"
-                                    value={selectedField?._id}
-                                    onChange={(e) => handleFieldSelect(fields.find(f => f._id === e.target.value))}
-                                >
-                                    {fields.map(f => <option key={f._id} value={f._id}>{f.name}</option>)}
-                                </select>
-                            </div>
+                            <CustomSelect
+                                options={fields}
+                                value={selectedField?._id}
+                                onChange={handleFieldSelect}
+                            />
                         )}
 
                         <button
@@ -463,8 +459,8 @@ const Alerts = () => {
                                             type="button"
                                             onClick={() => setNewAlert({ ...newAlert, riskLevel: level })}
                                             className={`flex-1 py-3 rounded-xl font-bold uppercase text-[10px] tracking-widest border-2 transition ${newAlert.riskLevel === level
-                                                    ? level === 'high' ? 'bg-red-500 border-red-500 text-white' : level === 'medium' ? 'bg-orange-500 border-orange-500 text-white' : 'bg-green-500 border-green-500 text-white'
-                                                    : 'bg-white border-gray-100 text-gray-400 hover:border-gray-200'
+                                                ? level === 'high' ? 'bg-red-500 border-red-500 text-white' : level === 'medium' ? 'bg-orange-500 border-orange-500 text-white' : 'bg-green-500 border-green-500 text-white'
+                                                : 'bg-white border-gray-100 text-gray-400 hover:border-gray-200'
                                                 }`}
                                         >
                                             {level}

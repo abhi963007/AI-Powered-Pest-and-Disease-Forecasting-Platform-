@@ -40,10 +40,12 @@ const MapRecenter = ({ center }) => {
     return null;
 };
 
+import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const FieldCard = ({ field }) => {
     const [showMap, setShowMap] = useState(false);
+    const navigate = useNavigate();
 
     return (
         <motion.div
@@ -142,6 +144,7 @@ const FieldCard = ({ field }) => {
                 <motion.button
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
+                    onClick={() => navigate('/forecast', { state: { fieldId: field._id } })}
                     className="w-full bg-[#1a2e1d] text-white py-4 rounded-2xl font-black uppercase tracking-[0.2em] text-[10px] shadow-xl hover:bg-[#6fb342] transition-colors duration-300 flex items-center justify-center gap-2"
                 >
                     Enter Field Dashboard

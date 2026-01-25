@@ -21,7 +21,8 @@ const DISEASE_RULES = [
 const getWeatherData = async (lat, lon, apiKey) => {
     if (!apiKey) return {
         temperature: 28, humidity: 75, condition: "Clear", description: "Demo Mode",
-        wind_speed: 3.5, rain_chance: 30, icon: "01d", location_name: "Demo Location"
+        wind_speed: 3.5, rain_chance: 30, icon: "01d", location_name: "Demo Location",
+        isDemo: true
     };
 
     try {
