@@ -33,23 +33,27 @@ HEALTHY_INDICES = [3, 5, 7, 11, 15, 18, 20, 23, 24, 25, 28, 38]
 
 def run_prediction(image_bytes):
     """Run AI prediction on image bytes"""
-    image = Image.open(io.BytesIO(image_bytes))
+    image = Image.open(io.BytesIO(image_bytes)).convert('RGB')
     image = image.resize((224, 224))
     input_data = TF.to_tensor(image)
     input_data = input_data.view((-1, 3, 224, 224))
     
     with torch.no_grad():
         output = model(input_data)
+        # Apply softmax to get probabilities
+        probabilities = torch.nn.functional.softmax(output, dim=1)
+        conf_score = torch.max(probabilities).item()
+        
         output = output.detach().numpy()
         index = np.argmax(output)
     
-    return int(index)
+    return int(index), float(conf_score)
 
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
         contents = await file.read()
-        pred_index = run_prediction(contents)
+        pred_index, confidence = run_prediction(contents)
         
         # Get disease info
         disease_name = disease_info['disease_name'][pred_index]
@@ -72,6 +76,7 @@ async def predict(file: UploadFile = File(...)):
         
         return {
             "index": pred_index,
+            "confidence": confidence,
             "disease_name": disease_name,
             "is_healthy": is_healthy,
             "description": description,

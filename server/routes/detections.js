@@ -43,6 +43,7 @@ router.post('/detect', auth, upload.single('image'), async (req, res) => {
             imagePath: req.file.path,
             diseaseName: result.disease_name,
             isHealthy: result.is_healthy,
+            confidence: result.confidence,
             description: result.description,
             prevention: result.prevention,
             supplementName: result.supplement?.name,

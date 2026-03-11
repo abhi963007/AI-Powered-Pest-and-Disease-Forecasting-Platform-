@@ -5,6 +5,7 @@ const detectionSchema = new mongoose.Schema({
     imagePath: { type: String, required: true },
     diseaseName: { type: String, required: true },
     isHealthy: { type: Boolean, required: true },
+    confidence: { type: Number },
     description: { type: String },
     prevention: { type: String },
     supplementName: { type: String },

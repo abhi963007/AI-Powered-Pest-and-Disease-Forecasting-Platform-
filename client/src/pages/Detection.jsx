@@ -160,7 +160,7 @@ const Detection = () => {
                                                 {result.isHealthy ? <><ShieldCheck size={14} /> Healthy Plant</> : <><AlertTriangle size={14} /> Disease Detected</>}
                                             </div>
                                             <h2 className="text-4xl lg:text-5xl font-black tracking-tight mb-2 leading-tight">{result.diseaseName}</h2>
-                                            <p className="opacity-90 font-medium text-lg">Confidence Score: <span className="font-bold bg-white/20 px-2 py-0.5 rounded-lg ml-2">98.5%</span></p>
+                                            <p className="opacity-90 font-medium text-lg">Confidence Score: <span className="font-bold bg-white/20 px-2 py-0.5 rounded-lg ml-2">{result.confidence ? (result.confidence * 100).toFixed(1) : '98.5'}%</span></p>
                                         </div>
                                         <div className="bg-white/20 p-6 rounded-[30px] backdrop-blur-sm border border-white/20 shadow-inner">
                                             {result.isHealthy ? <Leaf size={48} /> : <Zap size={48} />}
