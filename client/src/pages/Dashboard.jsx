@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
-import { Plus, MapPin, X, Sprout, Loader2 } from 'lucide-react';
+import { Plus, MapPin, X, Sprout, Loader2, Trash2 } from 'lucide-react';
 import { MapContainer, TileLayer, Marker, useMapEvents, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
@@ -43,7 +43,7 @@ const MapRecenter = ({ center }) => {
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
-const FieldCard = ({ field }) => {
+const FieldCard = ({ field, onDelete }) => {
     const [showMap, setShowMap] = useState(false);
     const navigate = useNavigate();
 
@@ -63,14 +63,24 @@ const FieldCard = ({ field }) => {
                             <span className="text-xs font-bold uppercase tracking-widest">{field.location}</span>
                         </div>
                     </div>
-                    <motion.button
-                        whileTap={{ scale: 0.9 }}
-                        onClick={() => setShowMap(!showMap)}
-                        className={`p-3 rounded-2xl transition-all duration-300 ${showMap ? 'bg-[#6fb342] text-white shadow-lg shadow-green-200' : 'bg-green-50 text-[#6fb342] hover:bg-green-100'}`}
-                        title={showMap ? "Show Details" : "Show Map"}
-                    >
-                        <MapPin size={20} />
-                    </motion.button>
+                    <div className="flex gap-2">
+                        <motion.button
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => setShowMap(!showMap)}
+                            className={`p-3 rounded-2xl transition-all duration-300 ${showMap ? 'bg-[#6fb342] text-white shadow-lg shadow-green-200' : 'bg-green-50 text-[#6fb342] hover:bg-green-100'}`}
+                            title={showMap ? "Show Details" : "Show Map"}
+                        >
+                            <MapPin size={20} />
+                        </motion.button>
+                        <motion.button
+                            whileTap={{ scale: 0.9 }}
+                            onClick={() => onDelete(field._id)}
+                            className="p-3 rounded-2xl bg-red-50 text-red-500 hover:bg-red-100 transition-all duration-300"
+                            title="Delete Field"
+                        >
+                            <Trash2 size={20} />
+                        </motion.button>
+                    </div>
                 </div>
 
                 <AnimatePresence mode="wait">
@@ -237,6 +247,17 @@ const Dashboard = () => {
         }
     };
 
+    const handleDeleteField = async (id) => {
+        if (window.confirm('Are you sure you want to delete this field? This action cannot be undone.')) {
+            try {
+                await axios.delete(`http://localhost:5000/api/fields/${id}`);
+                setFields(fields.filter(f => f._id !== id));
+            } catch (err) {
+                alert('Failed to delete field: ' + (err.response?.data?.error || err.message));
+            }
+        }
+    };
+
     const handleMapClick = (latlng) => {
         setNewField({
             ...newField,
@@ -274,7 +295,7 @@ const Dashboard = () => {
             >
                 <AnimatePresence>
                     {fields.map((field) => (
-                        <FieldCard key={field._id} field={field} />
+                        <FieldCard key={field._id} field={field} onDelete={handleDeleteField} />
                     ))}
                 </AnimatePresence>
 
